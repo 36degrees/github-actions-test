@@ -14,10 +14,10 @@ jobs:
         uses: actions/checkout@v2
       - name: Get version from VERSION.txt
         id: version
-        run: echo "::set-output name=VERSION::v${cat VERSION.txt}"
+        run: echo "::set-output name=VERSION::v$(cat VERSION.txt)"
       - name: Get changelog
         id: changelog
-        run: echo "::set-output name=CHANGELOG::${npx changelog-parser | jq '.versions[] | select(.version=="${{ steps.version.outputs.VERSION }}").body'}
+        run: echo "::set-output name=CHANGELOG::$(npx changelog-parser | jq '.versions[] | select(.version=='${{ steps.version.outputs.VERSION }}').body')"
       # - name: Create Release
       #   id: create_release
       #   uses: actions/create-release@v1
