@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0 (Feature release)
+## v1.0.0 (Feature release)
 
 ### New features
 - Added foo (#1)
