@@ -1,0 +1,52 @@
+on:
+  push:
+    branches:
+      - 'main'
+
+name: Create Tag
+
+jobs:
+  create-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/github-script@v3
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const version = require(`${process.env.GITHUB_WORKSPACE}/package.json`).version
+
+            let tag = false
+            
+            try {
+              tag = await github.git.getRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `tags/v${version}`
+              })
+            } catch (err) {
+              if (err instanceof HttpError && err.status == 404) {
+                // Swallow error
+              } else {
+                throw(err)
+              }
+            }
+
+            if (tag) {
+              console.log("😴 Current version already exists. Nothing to do.")
+            } else {
+              console.log(`🏷 Creating new tag: v${version}`)
+              github.git.createRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `refs/tags/v${version}`,
+                sha: context.sha
+              })
+
+              github.git.createRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: 'refs/heads/latest-release',
+                sha: context.sha
+              })
+            }
