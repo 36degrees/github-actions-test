@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.2 (Patch release)
+
+### Fixes
+
+- Double the amount of bar (#5)
+
 ## v1.0.1 (Patch release)
 
 ### New features
