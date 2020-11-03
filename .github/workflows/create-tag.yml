@@ -19,7 +19,7 @@ jobs:
             const tag = await github.git.getRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              tag_sha: `tags/v${version}`
+              ref: `tags/v${version}`
             })
 
             console.log(tag)
