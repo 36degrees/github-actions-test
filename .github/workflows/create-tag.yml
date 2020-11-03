@@ -25,7 +25,7 @@ jobs:
                 ref: `tags/v${version}`
               })
             } catch (err) {
-              if (err instanceof HttpError && err.status == 404) {
+              if (err.status && err.status == 404) {
                 // Swallow error
               } else {
                 throw(err)
