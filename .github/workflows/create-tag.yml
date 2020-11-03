@@ -16,18 +16,37 @@ jobs:
           script: |
             const version = require(`${process.env.GITHUB_WORKSPACE}/package.json`).version
 
-            const tag = await github.git.getRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: `tags/v${version}`
-            })
+            let tag = false
+            
+            try {
+              tag = await github.git.getRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `tags/v${version}`
+              })
+            } catch (err) {
+              if (err instanceof HttpError && err.status == 404) {
+                // Swallow error
+              } else {
+                throw(err)
+              }
+            }
 
-            console.log(tag)
+            if (tag) {
+              echo "😴 Current version already exists. Nothing to do."
+            } else {
+              echo "🏷 Creating new tag: $VERSION_TAG"
+              github.git.createRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `refs/tags/v${version}`,
+                sha: context.sha
+              })
 
-            const tag2 = await github.git.getRef({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              ref: `tags/v1.0.1`
-            })
-
-            console.log(tag2)
+              github.git.createRef({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                ref: `refs/heads/latest-release`,
+                sha: context.sha
+              })
+            }
