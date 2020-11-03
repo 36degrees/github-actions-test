@@ -39,14 +39,14 @@ jobs:
               github.git.createRef({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                ref: `refs/tags/v${version}`,
+                ref: `tags/v${version}`,
                 sha: context.sha
               })
 
               github.git.updateRef({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                ref: 'refs/heads/latest-release',
+                ref: 'heads/latest-release',
                 sha: context.sha
               })
             }
