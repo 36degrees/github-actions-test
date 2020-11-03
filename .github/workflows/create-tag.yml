@@ -16,18 +16,18 @@ jobs:
           script: |
             const version = require(`${process.env.GITHUB_WORKSPACE}/package.json`).version
 
-            const tag = await github.git.getTag({
+            const tag = await github.git.getRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              tag_sha: `v${version}`
+              tag_sha: `tags/v${version}`
             })
 
             console.log(tag)
 
-            const tag2 = await github.git.getTag({
+            const tag2 = await github.git.getRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              tag_sha: `v1.0.1`
+              ref: `tags/v1.0.1`
             })
 
             console.log(tag2)
