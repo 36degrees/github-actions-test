@@ -1,5 +1,11 @@
 # Changelog
 
+## Unreleased
+
+### New features
+
+- Add some bar (#4)
+
 ## v1.0.0 (Feature release)
 
 ### New features
